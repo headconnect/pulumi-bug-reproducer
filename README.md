@@ -10,6 +10,8 @@ https://github.com/pulumi/pulumi-azure-native/issues/699
 
 Simply clone this repo, select the stack "dev.infra.debugger" & run `pulumi up`.
 
+Password is `password`.
+
 Output should look similar to this:
 
 ```
