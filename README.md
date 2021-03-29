@@ -35,4 +35,6 @@ This is a symptom that it could not read the `stack/Pulumi.dev.infra.debugger.ya
 
 You will also note that it has created that file in the local (".") directory - as well as having overwritten the Pulumi.yaml file (ironically removes the `stack:` parameter).
 
+### FIX: 
 
+To fix this, simply uncomment line 32 of `automation.ts` to load the Pulumi.yaml from disk first. 
