@@ -4,8 +4,8 @@ trigger:
     - master
 
 
-#pool: $(poolName)
-pool: 'CloudPool-Linux-Spot'
+#pool: yourPoolHere - ubuntu20-04 was tested.
+
 
 stages:
 - stage: Verify  
@@ -16,15 +16,13 @@ stages:
       displayName: Check out the agent capabilities
       inputs:
         scriptType: bash
-        azureSubscription: KDI DigitalTwin Dev/Test Subscription
+        azureSubscription: <your-sub-here>
         scriptLocation: inlineScript
         addSpnToEnvironment: true
         inlineScript: |
           pulumi version
           node --version
-          df -h
-          ls -la
-          pwd
+          tsc --version
           
     - task: AzureCLI@2
       displayName: Running basic pulumi automation
@@ -32,16 +30,11 @@ stages:
         PULUMI_CONFIG_PASSPHRASE: password
       inputs:
         scriptType: bash
-        azureSubscription: KDI DigitalTwin Dev/Test Subscription
+        azureSubscription: <your-sub-here>
         scriptLocation: inlineScript
         addSpnToEnvironment: true
-        inlineScript: |          
-          node --version
-          npm --version
-          npm i
-          npm i typescript
-          npm i ts-node
-          tsc --version         
+        inlineScript: |                    
+          npm i    
           PULUMI_DEBUG_PROMISE_LEAKS=true npm run start
           
           
