@@ -1,2 +1,8 @@
 name: debug-infra
 runtime: nodejs
+description: |
+  Attempt at reproducing certain issues:
+  - Primarily directed at automation and CI/CD workflows.
+config: stacks
+#backend:
+#  url: 'azblob://pulumi-state'
