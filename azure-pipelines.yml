@@ -1,0 +1,49 @@
+trigger:
+  branches:
+    include:
+    - master
+
+
+#pool: $(poolName)
+pool: 'CloudPool-Linux-Spot'
+
+stages:
+- stage: Verify  
+  jobs:
+  - job: CheckSomeStuff
+    steps:
+    - task: AzureCLI@2
+      displayName: Check out the agent capabilities
+      inputs:
+        scriptType: bash
+        azureSubscription: KDI DigitalTwin Dev/Test Subscription
+        scriptLocation: inlineScript
+        addSpnToEnvironment: true
+        inlineScript: |
+          pulumi version
+          node --version
+          df -h
+          ls -la
+          pwd
+          
+    - task: AzureCLI@2
+      displayName: Running basic pulumi automation
+      env: 
+        PULUMI_CONFIG_PASSPHRASE: password
+      inputs:
+        scriptType: bash
+        azureSubscription: KDI DigitalTwin Dev/Test Subscription
+        scriptLocation: inlineScript
+        addSpnToEnvironment: true
+        inlineScript: |          
+          node --version
+          npm --version
+          npm i
+          npm i typescript
+          npm i ts-node
+          tsc --version         
+          PULUMI_DEBUG_PROMISE_LEAKS=true npm run start
+          
+          
+
+

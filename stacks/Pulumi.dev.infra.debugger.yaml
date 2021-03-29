@@ -1,0 +1,40 @@
+encryptionsalt: v1:Kxre8ulTPt8=:v1:i1aiBJ8P78HWQhmh:lrjsbhPeE51x05dcdVoPmgmomATqPA==
+#password=password
+config:
+  azure:netDefs: 
+  - location: westeurope
+    logicalName: Debugger1234
+    nodeName: node1234
+    zone2cidr: 10.0.2.0/24
+    zone4cidr: 10.0.4.0/24
+    zone7cidr: 10.0.7.0/24
+    zone8cidr: 10.0.8.0/24
+    tags:
+      # Standard tagging rules apply :)
+      Classification: Internal 
+      Criticality: Low
+      Description: Debugging pulumi
+  azure:storageAccount:
+    accounts:
+      storage01:
+        subnetReference: zone4
+    common:
+      config:
+        allowSharedKeyAccess: false
+  azure:subnets:
+    zone2:
+      serviceEndpoints:
+      - service: Microsoft.Storage
+  azure:create:
+    # This is used to dictate which resource types should be created.
+    # Some of these, if set to true, will REQUIRE configuration, others will not.
+    # Note as well: if you set something you have already deployed from TRUE to FALSE - those resources will be DESTROYED.
+    network: true         # Fundamental Networking - Default setup uses only SSP config ## REQUIRED FOR EVERYTHING TO FUNCTION
+    storageAccount: true  # Storage Account - Default setup requires no external config - unless management of containers and such is desired
+    keyVault: false       # Azure KeyVault - Default setup requires no external config
+    aks: false            # Kubernetes Cluster - Default setup requires no external config (single nodepool)
+    acr: false            # Container Registry - Default setup requires no external config
+    appgw: true           # Application Gateway - Default setup requires no external config
+    imageGallery: false   # Shared Image Gallery - Default setup requires no external config (but is kinda boring)
+    scaleset: false       # Virtual Machine ScaleSet - Default setup REQUIRES external config
+    vm: false             # Virtual Machine - Default setup REQUIRES external config
