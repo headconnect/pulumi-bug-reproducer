@@ -115,6 +115,8 @@ export const createNetworks = async function(netStack : any) : Promise<any> {
      *  Looping for subnets and ngsgs
      */
 
+    // minor hack for netname deps:
+    let lastNetName = ""
     for (const netName in netStack.network.subnet) {
         netStack.network[netName] = {};
         /****
@@ -165,6 +167,14 @@ export const createNetworks = async function(netStack : any) : Promise<any> {
             } else {
                 subnetDeps = [netStack.network.vnet.resource]
             }
+
+            /***
+             * Adding a dependency hack to avoid https://github.com/pulumi/pulumi-azure-native/issues/699
+             */
+            
+            if (lastNetName !== "") {
+                subnetDeps.push(netStack.network[lastNetName].subnet.resource)
+            }
             
             const subnet = new azure.network.Subnet(subnetName, subnetConf, {dependsOn: subnetDeps})
 
@@ -175,6 +185,8 @@ export const createNetworks = async function(netStack : any) : Promise<any> {
                     id: subnet.id.apply(id => id)
                 }
             }
+            // dependency hack updater
+            lastNetName = netName;
             
         }
     }
